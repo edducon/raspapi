@@ -1,0 +1,71 @@
+package config
+
+import (
+	"fmt"
+	"github.com/caarlos0/env/v11"
+	"github.com/joho/godotenv"
+)
+
+type (
+	Config struct {
+		App    App
+		Log    Log
+		HTTP   HTTP
+		PG     PG
+		JWT    JWT
+		Parser Parser
+		RL     RateLimiter
+		Auth   Auth
+	}
+	App struct {
+		Name    string `env:"APP_NAME,required"`
+		Version string `env:"APP_VERSION,required"`
+	}
+	Log struct {
+		Level string `env:"LOG_LEVEL,required"`
+		Type  string `env:"LOG_TYPE,required"`
+	}
+
+	HTTP struct {
+		Port string `env:"HTTP_PORT,required"`
+	}
+
+	PG struct {
+		PGURL    string `env:"PG_URL,required"`
+		Timeout  string `env:"PG_TIMEOUT,required"`
+		Attempts int    `env:"PG_ATTEMPTS,required"`
+	}
+
+	JWT struct {
+		JWTSecret string `env:"JWT_SECRET,required"`
+	}
+
+	Parser struct {
+		Timeout        int `env:"PARSER_TIMEOUT,required"`
+		RequestTimeout int `env:"PARSER_REQUEST_TIMEOUT,required"`
+	}
+
+	RateLimiter struct {
+		Limit float64 `env:"RL_LIMIT,required"`
+		Burst int     `env:"RL_BURST,required"`
+	}
+
+	Auth struct {
+		BasePath   string `env:"AUTH_BASE_PATH,required"`
+		VerifyPath string `env:"AUTH_VERIFY_PATH,required"`
+	}
+)
+
+func NewConfig() (*Config, error) {
+	cfg := &Config{}
+	err := godotenv.Load(".env")
+	if err != nil {
+		return nil, fmt.Errorf("config error: %w", err)
+	}
+
+	if err := env.Parse(cfg); err != nil {
+		return nil, fmt.Errorf("config error: %w", err)
+	}
+
+	return cfg, nil
+}
