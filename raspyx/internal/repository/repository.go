@@ -99,6 +99,7 @@ type ScheduleRepository interface {
 	GetScheduleByLocationUUID(locationUUID string, isSession bool) (*[]models.GetSchedule, error)
 
 	UpdateSchedule(scheduleUUID string, scheduleData *models.UpdateScheduleRequest) error
+	UpdateScheduleLinkByLesson(filters *models.UpdateScheduleLinkByLessonRequest) (int64, error)
 
 	DeleteSchedule(scheduleUUID string) error
 	DeleteScheduleByFilters(filters *models.DeleteScheduleFilters) error

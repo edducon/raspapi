@@ -67,6 +67,18 @@ type UpdateScheduleRequest struct {
 	IsSession       bool                 `json:"is_session" example:"false"`
 }
 
+type UpdateScheduleLinkByLessonRequest struct {
+	GroupUUID   string
+	SubjectName string
+	SubjectType string
+	StartTime   string
+	StartDate   string
+	EndDate     string
+	Weekday     int
+	Link        string
+	IsSession   bool
+}
+
 type ScheduleResponse struct {
 	ScheduleUUID string `json:"schedule_uuid" example:"4b6c34bd-01f0-4fbe-be65-217984b3e33d"`
 }

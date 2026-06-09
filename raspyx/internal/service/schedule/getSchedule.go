@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"raspyx2/internal/models"
 	"strings"
+	"time"
 )
 
 func (s *ScheduleService) GetScheduleByGroupNumber(groupNumber string, isSession bool) (*models.Week, error) {
@@ -24,6 +25,8 @@ func (s *ScheduleService) GetScheduleByGroupNumber(groupNumber string, isSession
 	if groupUUID == "" {
 		return nil, fmt.Errorf("group %q not found", groupNumber)
 	}
+
+	_ = s.refreshUpcomingLinksByGroupNumber(groupNumber, groupUUID, isSession, time.Now())
 
 	allSchedule, err := s.repo.ScheduleRepository.GetScheduleByGroupUUID(groupUUID, isSession)
 	if err != nil {
@@ -68,35 +71,35 @@ func (s *ScheduleService) GetScheduleByTeacherFio(teacherFio string, isSession b
 }
 
 func (s *ScheduleService) GetScheduleByLocationName(locationName string, isSession bool) (*models.Week, error) {
-    locationName = strings.TrimSpace(locationName)
+	locationName = strings.TrimSpace(locationName)
 
-    // 1. Ищем локацию по названию (используем репозиторий локаций)
-    locations, err := s.repo.LocationsRepository.GetLocationsByName(locationName)
-    if err != nil {
-       return nil, fmt.Errorf("error get location %q: %w", locationName, err)
-    }
+	// 1. Ищем локацию по названию (используем репозиторий локаций)
+	locations, err := s.repo.LocationsRepository.GetLocationsByName(locationName)
+	if err != nil {
+		return nil, fmt.Errorf("error get location %q: %w", locationName, err)
+	}
 
-    // 2. Достаем точный UUID этой локации
-    var locationUUID string
-    for _, loc := range *locations {
-       if strings.EqualFold(loc.Name, locationName) || loc.Name == locationName {
-          locationUUID = loc.UUID
-          break
-       }
-    }
+	// 2. Достаем точный UUID этой локации
+	var locationUUID string
+	for _, loc := range *locations {
+		if strings.EqualFold(loc.Name, locationName) || loc.Name == locationName {
+			locationUUID = loc.UUID
+			break
+		}
+	}
 
-    if locationUUID == "" {
-       return nil, fmt.Errorf("location %q not found", locationName)
-    }
+	if locationUUID == "" {
+		return nil, fmt.Errorf("location %q not found", locationName)
+	}
 
-    // 3. Запрашиваем расписание по UUID локации
-    allSchedule, err := s.repo.ScheduleRepository.GetScheduleByLocationUUID(locationUUID, isSession)
-    if err != nil {
-       return nil, fmt.Errorf("error get schedule: %w", err)
-    }
+	// 3. Запрашиваем расписание по UUID локации
+	allSchedule, err := s.repo.ScheduleRepository.GetScheduleByLocationUUID(locationUUID, isSession)
+	if err != nil {
+		return nil, fmt.Errorf("error get schedule: %w", err)
+	}
 
-    // 4. Пакуем в неделю
-    return makeWeek(allSchedule), nil
+	// 4. Пакуем в неделю
+	return makeWeek(allSchedule), nil
 }
 
 func makeWeek(schedule *[]models.GetSchedule) *models.Week {

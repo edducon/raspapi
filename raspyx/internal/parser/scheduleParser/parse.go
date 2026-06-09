@@ -341,13 +341,6 @@ func (p *ScheduleParser) mapLessonToPair(groupNumber string, lesson *models.Less
 		return rooms[i].Number < rooms[j].Number
 	})
 
-	var link string
-	if len(lesson.Auditories) > 0 {
-		link = getLinkFromHTML(lesson.Auditories[0].Title)
-	} else {
-		link = ""
-	}
-
 	pair := &models.Pair{
 		Group:       &models.Group{Number: groupNumber},
 		Subject:     &models.Subject{Name: p.RemoveTrash(lesson.Sbj)},
@@ -357,19 +350,34 @@ func (p *ScheduleParser) mapLessonToPair(groupNumber string, lesson *models.Less
 		Rooms:       &rooms,
 		StartDate:   lesson.Df,
 		EndDate:     lesson.Dt,
-		Link:        link,
+		Link:        getLessonLink(lesson),
 	}
 
 	return pair
 }
 
 func getLinkFromHTML(html string) string {
+	urlRegex := regexp.MustCompile(`https?://[^\s"'<>]+`)
+	if link := urlRegex.FindString(html); link != "" {
+		return link
+	}
+
 	htmlRegex := regexp.MustCompile(`['"].*?['"]`)
 	links := htmlRegex.FindAllString(html, -1)
 
 	for _, link := range links {
 		if strings.Contains(link, "http") {
 			return link[1 : len(link)-1]
+		}
+	}
+
+	return ""
+}
+
+func getLessonLink(lesson *models.Lesson) string {
+	for _, auditory := range lesson.Auditories {
+		if link := getLinkFromHTML(auditory.Title); link != "" {
+			return link
 		}
 	}
 
@@ -566,11 +574,6 @@ func (p *ScheduleParser) createSchedule(groupNumber, pairNum, dayNum string, isS
 		return err
 	}
 
-	var link string
-	if len(pair.Auditories) > 0 {
-		link = getLinkFromHTML(pair.Auditories[0].Title)
-	}
-
 	_, err = p.Services.ScheduleService.CreateSchedule(&models.AddScheduleRequest{
 		GroupUUID:       group.UUID,
 		SubjectUUID:     subject.UUID,
@@ -583,7 +586,7 @@ func (p *ScheduleParser) createSchedule(groupNumber, pairNum, dayNum string, isS
 		StartDate:       pair.Df,
 		EndDate:         pair.Dt,
 		Weekday:         int(weekday),
-		Link:            link,
+		Link:            getLessonLink(pair),
 		IsSession:       isSession,
 	})
 

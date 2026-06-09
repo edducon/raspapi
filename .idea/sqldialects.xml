@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000001_create_db.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000001_create_db.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000002_create_table_groups.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000002_create_table_groups.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000003_create_table_locations.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000003_create_table_locations.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000004_create_table_rooms.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000004_create_table_rooms.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000005_create_table_subjects.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000005_create_table_subjects.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000006_create_table_subject_types.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000006_create_table_subject_types.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000007_create_table_teachers.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000007_create_table_teachers.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000008_create_table_schedule.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000008_create_table_schedule.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000009_create_tables_ttos_rtos.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyx/migrations/000009_create_tables_ttos_rtos.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000001_create_db.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000001_create_db.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000002_create_table_users.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000002_create_table_users.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000003_create_table_refresh_sessions.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/raspyxauth/migrations/000003_create_table_refresh_sessions.up.sql" dialect="GenericSQL" />
+  </component>
+</project>
